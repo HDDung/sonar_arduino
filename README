@@ -1,0 +1,5 @@
+#Arduino -> ROS software
+
+Libraries and code are made for Arduino-0023
+
+Publishes the sonar values to ROS in a Float32MultiArray
