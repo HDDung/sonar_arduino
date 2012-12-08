@@ -10,6 +10,8 @@
 #include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/String.h>
 
+#define TIME_OUT 1000
+
 
 /* Sonar_sfr08 Functions---
  	void connect();
@@ -106,10 +108,10 @@ void loop()
   Sensor_4.setRegister(Sensor_4_addr, ResultRegister);
 
   //read data from result register
-  sensor_1_Reading = Sensor_1.readData(Sensor_1_addr, 2);
-  sensor_2_Reading = Sensor_2.readData(Sensor_2_addr, 2);
-  sensor_3_Reading = Sensor_3.readData(Sensor_3_addr, 2);
-  sensor_4_Reading = Sensor_4.readData(Sensor_4_addr, 2);
+  sensor_1_Reading = Sensor_1.readData(Sensor_1_addr, 2, TIME_OUT);
+  sensor_2_Reading = Sensor_2.readData(Sensor_2_addr, 2, TIME_OUT);
+  sensor_3_Reading = Sensor_3.readData(Sensor_3_addr, 2, TIME_OUT);
+  sensor_4_Reading = Sensor_4.readData(Sensor_4_addr, 2, TIME_OUT);
 
   //sonarData = temp_string;
   sonar_msg.data[0] = sensor_1_Reading;
@@ -122,5 +124,3 @@ void loop()
 
   nh.spinOnce();
 }
-
-

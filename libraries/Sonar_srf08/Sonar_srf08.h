@@ -15,7 +15,7 @@ class Sonar_srf08
 	void sendCommand(int commandRegister, int address, int command);
 	void setUnit(int commandRegister, int address, char units);
 	void setRegister(int address, int thisRegister);
-	int readData(int address, int numBytes);
+	int readData(int address, int numBytes, int timeoutCounter);
 	void changeAddress(int commandRegister,int NEW_ADDRESS);
   private:
 //	int _pin1;

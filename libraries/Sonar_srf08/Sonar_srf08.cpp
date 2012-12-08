@@ -68,13 +68,16 @@ void Sonar_srf08::setRegister(int address, int thisRegister){
 
 // Read data from register return result
 
-int Sonar_srf08::readData(int address, int numBytes){
+int Sonar_srf08::readData(int address, int numBytes, int timeoutCounter){
   int result = 0;        // the result is two bytes long
-  // send I2C request for data:
+  int count = 0;
+ // send I2C request for data:
   Wire.requestFrom(address, numBytes);
   // wait for two bytes to return:
   while (Wire.available() < 2 )   {
     // wait for result
+	if (count++ >= timeoutCounter)
+		return 0;
   }
   // read the two bytes, and combine them into one int:
   delay(50);
