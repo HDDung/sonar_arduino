@@ -81,6 +81,13 @@ void setup()
 
   nh.advertise(pub_sonar);
   
+
+
+}
+
+
+void loop()
+{
   //request reading from sensor
   Sensor_1.setUnit(CommandRegister, Sensor_1_addr, unit);
   Sensor_2.setUnit(CommandRegister, Sensor_2_addr, unit);
@@ -89,12 +96,6 @@ void setup()
 
   //pause
   delay(70);
-
-}
-
-
-void loop()
-{
 
   //set register for reading
   Sensor_1.setRegister(Sensor_1_addr, ResultRegister);
