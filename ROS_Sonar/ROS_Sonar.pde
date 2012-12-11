@@ -41,20 +41,16 @@ float sensorReading = 0;
 char unit = 'c'; // 'i' for inches , 'c' for centimeters
 
 Sonar_srf08 Sensor_1;
-int Sensor_1_addr = 0xE4; // 0xF8 // 248
-float sensor_1_Reading = 0;
+int Sensor_1_addr = 0xE4;
 
 Sonar_srf08 Sensor_2;
-int Sensor_2_addr = 0xE6; // 0xF8 // 248
-float sensor_2_Reading = 0;
+int Sensor_2_addr = 0xE6;
 
 Sonar_srf08 Sensor_3;
-int Sensor_3_addr = 0xE8; // 0xF8 // 248
-float sensor_3_Reading = 0;
+int Sensor_3_addr = 0xE8;
 
 Sonar_srf08 Sensor_4;
-int Sensor_4_addr = 0xEA; // 0xF8 // 248
-float sensor_4_Reading = 0;
+int Sensor_4_addr = 0xEA;
 
 
 void setup()
@@ -84,14 +80,7 @@ void setup()
   sonar_msg.data_length = 4;
 
   nh.advertise(pub_sonar);
-}
-
-
-long publisher_timer;
-
-void loop()
-{
-
+  
   //request reading from sensor
   Sensor_1.setUnit(CommandRegister, Sensor_1_addr, unit);
   Sensor_2.setUnit(CommandRegister, Sensor_2_addr, unit);
@@ -101,6 +90,12 @@ void loop()
   //pause
   delay(70);
 
+}
+
+
+void loop()
+{
+
   //set register for reading
   Sensor_1.setRegister(Sensor_1_addr, ResultRegister);
   Sensor_2.setRegister(Sensor_2_addr, ResultRegister);
@@ -108,19 +103,13 @@ void loop()
   Sensor_4.setRegister(Sensor_4_addr, ResultRegister);
 
   //read data from result register
-  sensor_1_Reading = Sensor_1.readData(Sensor_1_addr, 2, TIME_OUT);
-  sensor_2_Reading = Sensor_2.readData(Sensor_2_addr, 2, TIME_OUT);
-  sensor_3_Reading = Sensor_3.readData(Sensor_3_addr, 2, TIME_OUT);
-  sensor_4_Reading = Sensor_4.readData(Sensor_4_addr, 2, TIME_OUT);
+  sonar_msg.data[0] = Sensor_1.readData(Sensor_1_addr, 2, TIME_OUT);
+  sonar_msg.data[1] = Sensor_2.readData(Sensor_2_addr, 2, TIME_OUT);
+  sonar_msg.data[2] = Sensor_3.readData(Sensor_3_addr, 2, TIME_OUT);
+  sonar_msg.data[3] = Sensor_4.readData(Sensor_4_addr, 2, TIME_OUT);
 
-  //sonarData = temp_string;
-  sonar_msg.data[0] = sensor_1_Reading;
-  sonar_msg.data[1] = sensor_2_Reading;
-  sonar_msg.data[2] = sensor_3_Reading;
-  sonar_msg.data[3] = sensor_4_Reading;
-
+  //Publish the data from sonars
   pub_sonar.publish(&sonar_msg);
-  publisher_timer = millis() + 40; //publish once a second
 
   nh.spinOnce();
 }
